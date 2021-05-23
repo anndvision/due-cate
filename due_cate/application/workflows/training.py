@@ -125,7 +125,7 @@ def deep_kernel_gp_trainer(
             learning_rate=learning_rate,
             batch_size=batch_size,
             epochs=epochs,
-            patience=10,
+            patience=20,
             num_workers=0,
             seed=None,
         )
