@@ -131,7 +131,7 @@ def build_ensemble(config, experiment_dir, ds):
             architecture="resnet",
             dim_input=ds.dim_input,
             dim_hidden=config.get("dim_hidden"),
-            dim_output=config.get("num_components"),
+            dim_output=config.get("dim_output"),
             depth=config.get("depth"),
             negative_slope=config.get("negative_slope"),
             batch_norm=False,

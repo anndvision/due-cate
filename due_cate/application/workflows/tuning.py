@@ -73,7 +73,7 @@ def tune_deep_kernel_gp(config):
         run_or_experiment=func,
         metric="mean_loss",
         mode="min",
-        name="hyperopt_due",
+        name="hyperopt_deep_kernel_gp",
         resources_per_trial={
             "cpu": config.get("cpu_per_trial"),
             "gpu": config.get("gpu_per_trial"),
@@ -148,7 +148,7 @@ def tune_tarnet(config):
         run_or_experiment=func,
         metric="mean_loss",
         mode="min",
-        name="hyperopt_density_estimator",
+        name="hyperopt_tarnet",
         resources_per_trial={
             "cpu": config.get("cpu_per_trial"),
             "gpu": config.get("gpu_per_trial"),

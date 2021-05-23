@@ -344,7 +344,7 @@ def ensemble(
         ray.get(results)
 
 
-@cli.command("deep_kernel_gp")
+@cli.command("deep-kernel-gp")
 @click.pass_context
 @click.option("--kernel", default="Matern32", type=str, help="GP kernel")
 @click.option(

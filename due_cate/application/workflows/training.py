@@ -21,7 +21,7 @@ def tarnet_trainer(
     ds_valid = datasets.DATASETS.get(dataset_name)(**config.get("ds_valid"))
 
     dim_hidden = config.get("dim_hidden")
-    dim_output = config.get("num_components")
+    dim_output = config.get("dim_output")
     depth = config.get("depth")
     negative_slope = config.get("negative_slope")
     dropout_rate = config.get("dropout_rate")
