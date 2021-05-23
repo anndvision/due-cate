@@ -119,7 +119,7 @@ def predict_ensemble(config, trial_dir, ds):
     mu_0 = np.asarray(mu_0)
     mu_1 = np.asarray(mu_1)
     tau_pred = mu_1 - mu_0
-    return tau_pred.squeeze(-1) * ds.y_std[0]
+    return tau_pred * ds.y_std[0]
 
 
 def build_ensemble(config, experiment_dir, ds):

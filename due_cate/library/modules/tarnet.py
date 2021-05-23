@@ -103,7 +103,7 @@ class TARNet(nn.Module):
             ),
         )
         self.dim_output = dim_hidden // 2
-        self.density = SplitNormal(dim_input=dim_hidden // 2, dim_output=dim_output)
+        self.density = SplitGMM(dim_input=dim_hidden // 2, dim_output=dim_output)
 
     def forward(self, inputs):
         phi = self.encoder(inputs[:, :-1])
@@ -112,19 +112,31 @@ class TARNet(nn.Module):
         return self.density(torch.cat([phi, t], dim=-1))
 
 
-class SplitNormal(nn.Module):
+class MixtureSameFamily(distributions.MixtureSameFamily):
+    def log_prob(self, inputs):
+        loss = torch.exp(self.component_distribution.log_prob(inputs))
+        loss = torch.sum(loss * self.mixture_distribution.probs, dim=1)
+        return torch.log(loss + 1e-7)
+
+
+class SplitGMM(nn.Module):
     def __init__(
         self,
         dim_input,
         dim_output,
     ):
-        super(SplitNormal, self).__init__()
+        super(SplitGMM, self).__init__()
         self.mu0 = nn.Linear(
             in_features=dim_input,
             out_features=dim_output,
             bias=True,
         )
         sigma0 = nn.Linear(
+            in_features=dim_input,
+            out_features=dim_output,
+            bias=True,
+        )
+        self.pi0 = nn.Linear(
             in_features=dim_input,
             out_features=dim_output,
             bias=True,
@@ -140,11 +152,20 @@ class SplitNormal(nn.Module):
             out_features=dim_output,
             bias=True,
         )
+        self.pi1 = nn.Linear(
+            in_features=dim_input,
+            out_features=dim_output,
+            bias=True,
+        )
         self.sigma1 = nn.Sequential(sigma1, nn.Softplus())
 
     def forward(self, inputs):
         x = inputs[:, :-1]
         t = inputs[:, -1:]
+        logits = (1 - t) * self.pi0(x) + t * self.pi1(x)
         loc = (1 - t) * self.mu0(x) + t * self.mu1(x)
         scale = (1 - t) * self.sigma0(x) + t * self.sigma1(x) + 1e-7
-        return distributions.Normal(loc=loc, scale=scale)
+        return MixtureSameFamily(
+            mixture_distribution=distributions.Categorical(logits=logits),
+            component_distribution=distributions.Normal(loc=loc, scale=scale),
+        )
