@@ -1,6 +1,5 @@
 import torch
 import pyreadr
-import requests
 import numpy as np
 
 from pathlib import Path
@@ -44,14 +43,16 @@ _BINARY_COVARIATES = [
 _TREATMENT = ["treat"]
 
 
-class IHDP(data.Dataset):
+class IHDPCov(data.Dataset):
     def __init__(self, root, split, mode, seed):
         root = Path(root)
         data_path = root / "ihdp.RData"
-        #Download data if necessary
+        # Download data if necessary
         if not data_path.exists():
-            r = requests.get("https://github.com/vdorie/npci/raw/master/examples/ihdp_sim/data/ihdp.RData")
-            with open(data_path, 'wb') as f:
+            r = requests.get(
+                "https://github.com/vdorie/npci/raw/master/examples/ihdp_sim/data/ihdp.RData"
+            )
+            with open(data_path, "wb") as f:
                 f.write(r.content)
         df = pyreadr.read_r(str(data_path))["ihdp"]
         # Make observational as per Hill 2011
@@ -87,6 +88,7 @@ class IHDP(data.Dataset):
         df_train, df_test = model_selection.train_test_split(
             df, test_size=0.1, random_state=seed
         )
+        df_train = df_train[df["b.marr"] == 1]
         self.mode = mode
         self.split = split
         # Set x, y, and t values
@@ -101,6 +103,7 @@ class IHDP(data.Dataset):
             else np.asarray([1.0], dtype="float32")
         )
         covars = _CONTINUOUS_COVARIATES + _BINARY_COVARIATES
+        covars.remove("b.marr")
         self.dim_input = len(covars)
         self.dim_treatment = 1
         self.dim_output = 1

@@ -15,10 +15,14 @@ import torch
 
 from torch import nn
 from torch.nn import functional
-from torch.nn.utils import spectral_norm
+from torch.nn.utils.spectral_norm import (
+    SpectralNorm,
+    SpectralNormStateDictHook,
+    SpectralNormLoadStateDictPreHook,
+)
 
 
-class SpectralNormFC(spectral_norm.SpectralNorm):
+class SpectralNormFC(SpectralNorm):
     def compute_weight(self, module, do_power_iteration: bool) -> torch.Tensor:
         weight = getattr(module, self.name + "_orig")
         u = getattr(module, self.name + "_u")
@@ -63,7 +67,7 @@ class SpectralNormFC(spectral_norm.SpectralNorm):
         eps: float,
     ) -> "SpectralNormFC":
         for k, hook in module._forward_pre_hooks.items():
-            if isinstance(hook, spectral_norm.SpectralNorm) and hook.name == name:
+            if isinstance(hook, SpectralNorm) and hook.name == name:
                 raise RuntimeError(
                     "Cannot register two spectral_norm hooks on "
                     "the same parameter {}".format(name)
@@ -96,10 +100,8 @@ class SpectralNormFC(spectral_norm.SpectralNorm):
         module.register_buffer(fn.name + "_sigma", torch.ones(1))
 
         module.register_forward_pre_hook(fn)
-        module._register_state_dict_hook(spectral_norm.SpectralNormStateDictHook(fn))
-        module._register_load_state_dict_pre_hook(
-            spectral_norm.SpectralNormLoadStateDictPreHook(fn)
-        )
+        module._register_state_dict_hook(SpectralNormStateDictHook(fn))
+        module._register_load_state_dict_pre_hook(SpectralNormLoadStateDictPreHook(fn))
         return fn
 
 
@@ -152,7 +154,7 @@ def spectral_norm_fc(
     return module
 
 
-class SpectralNormConv(spectral_norm.SpectralNorm):
+class SpectralNormConv(SpectralNorm):
     def compute_weight(self, module, do_power_iteration: bool) -> torch.Tensor:
         weight = getattr(module, self.name + "_orig")
         u = getattr(module, self.name + "_u")
@@ -243,10 +245,8 @@ class SpectralNormConv(spectral_norm.SpectralNorm):
 
         module.register_forward_pre_hook(fn)
 
-        module._register_state_dict_hook(spectral_norm.SpectralNormStateDictHook(fn))
-        module._register_load_state_dict_pre_hook(
-            spectral_norm.SpectralNormLoadStateDictPreHook(fn)
-        )
+        module._register_state_dict_hook(SpectralNormStateDictHook(fn))
+        module._register_load_state_dict_pre_hook(SpectralNormLoadStateDictPreHook(fn))
         return fn
 
 
