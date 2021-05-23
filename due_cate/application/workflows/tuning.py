@@ -104,7 +104,7 @@ def tune_tarnet(config):
         ds_valid = datasets.DATASETS.get(dataset_name)(**config.get("ds_valid"))
 
         dim_hidden = config.get("dim_hidden")
-        dim_output = config.get("num_components")
+        dim_output = config.get("dim_output")
         depth = config.get("depth")
         negative_slope = config.get("negative_slope")
         dropout_rate = config.get("dropout_rate")
@@ -113,11 +113,10 @@ def tune_tarnet(config):
         batch_size = config.get("batch_size")
         epochs = config.get("epochs")
 
-        outcome_model = models.GaussianMixtureDensityNetwork(
+        outcome_model = models.TARNet(
             job_dir=None,
             architecture="resnet",
             dim_input=ds_train.dim_input,
-            dim_treatment=ds_train.dim_treatment,
             dim_hidden=dim_hidden,
             dim_output=dim_output,
             depth=depth,
