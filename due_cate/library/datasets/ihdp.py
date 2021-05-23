@@ -50,6 +50,7 @@ class IHDP(data.Dataset):
         data_path = root / "ihdp.RData"
         # Download data if necessary
         if not data_path.exists():
+            root.mkdir(parents=True, exist_ok=True)
             r = requests.get(
                 "https://github.com/vdorie/npci/raw/master/examples/ihdp_sim/data/ihdp.RData"
             )
