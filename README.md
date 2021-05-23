@@ -48,7 +48,7 @@ due-cate \
 ```
 
 ```.sh
-due-cate evaluate ----experiment-dir experiments/ihdp/tarnet/dh-200_do-1_dp-3_ns--1.0_dr-0.2_sn-0.95_lr-0.001_bs-100_ep-500/
+due-cate evaluate ----experiment-dir experiments/ihdp/tarnet/dh-200_do-2_dp-3_ns--1.0_dr-0.2_sn-0.95_lr-0.001_bs-100_ep-500/
 ```
 
 ### IHDP Covariate Shift Ensemble
@@ -63,5 +63,5 @@ due-cate \
 ```
 
 ```.sh
-due-cate evaluate ----experiment-dir experiments/ihdp-cov/tarnet/dh-200_do-1_dp-3_ns--1.0_dr-0.2_sn-0.95_lr-0.001_bs-100_ep-500/
+due-cate evaluate ----experiment-dir experiments/ihdp-cov/tarnet/dh-200_do-2_dp-3_ns--1.0_dr-0.2_sn-0.95_lr-0.001_bs-100_ep-500/
 ```
