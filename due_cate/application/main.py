@@ -246,7 +246,7 @@ def ihdp_cov(
 @cli.command("ensemble")
 @click.pass_context
 @click.option("--dim-hidden", default=200, type=int, help="num neurons")
-@click.option("--dim-output", default=1, type=int, help="output dimensionality")
+@click.option("--dim-output", default=2, type=int, help="output dimensionality")
 @click.option("--depth", default=3, type=int, help="depth of feature extractor")
 @click.option(
     "--negative-slope",
@@ -354,7 +354,7 @@ def ensemble(
     help="Number of Deep GP Inducing Points",
 )
 @click.option("--dim-hidden", default=200, type=int, help="num neurons")
-@click.option("--dim-output", default=2, type=int, help="output dimensionality")
+@click.option("--dim-output", default=1, type=int, help="output dimensionality")
 @click.option("--depth", default=3, type=int, help="depth of feature extractor")
 @click.option(
     "--negative-slope",
