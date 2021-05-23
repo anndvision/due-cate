@@ -6,8 +6,6 @@ setup(
     description="Determninistic Uncertainty Estimation for Conditional Average Treatment Effects",
     long_description_content_type="text/markdown",
     url="https://github.com/anndvision/due-cate",
-    author="Andrew Jesson",
-    author_email="andrew.jesson@cs.ox.ac.uk",
     license="Apache-2.0",
     packages=find_packages(),
     install_requires=[
