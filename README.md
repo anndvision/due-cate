@@ -2,6 +2,25 @@
 
 Determninistic Uncertainty Estimation for Conditional Average Treatment Effects
 
+## Citation
+
+If you use this repository, please cite:
+```
+@article{van2021on,
+  title={On Feature Collapse and Deep Kernel Learning for Single Forward Pass Uncertainty},
+  author={van Amersfoort, Joost and Smith, Lewis and Jesson, Andrew and Key, Oscar and Gal, Yarin},
+  journal={arXiv preprint arXiv:2102.11409},
+  year={2021}
+}
+```
+
+## Installation
+```
+cd due-cate
+conda env create -f environment.yml
+pip install -e .
+```
+
 ## Deep Kernel GP Experiments
 
 ### IHDP Deep Kernel GP
