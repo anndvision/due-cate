@@ -2,6 +2,8 @@
 
 Determninistic Uncertainty Estimation for Conditional Average Treatment Effects
 
+Reference implementation for DUE: https://github.com/y0ast/DUE
+
 ## Citation
 
 If you use this repository, please cite:
